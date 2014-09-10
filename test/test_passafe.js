@@ -20,7 +20,7 @@ describe("Passsafe, the higher-level API", function(){
 		expect(Passsafe.isValid(badpass, hashed)).to.be(false);
 	});
 
-	it('returns different encrypted passwords for the same cleartext password', function(){
+	it('returns different hashed passwords for the same cleartext password', function(){
 		var enc1 = Passsafe.hash(realpass);
 		var enc2 = Passsafe.hash(realpass);
 		expect(enc1).not.to.eql(enc2);
@@ -29,31 +29,31 @@ describe("Passsafe, the higher-level API", function(){
 
 describe("Passsafe, the lower-level API", function(){
 
-	describe('encrypt', function(){
+	describe('hash', function(){
 
 		it('works on a clear password', function(){
 			var password = Passsafe.clear(realpass);
-			expect(password.encrypt()).to.be.an(Passsafe.Encrypted);
+			expect(password.hash()).to.be.an(Passsafe.Hashed);
 		});
 
-		it('works on an encrypted password', function(){
-			var encrypted = Passsafe.clear(realpass).encrypt();
-			expect(encrypted.encrypt()).to.be(encrypted);
+		it('works on an hashed password', function(){
+			var hashed = Passsafe.clear(realpass).hash();
+			expect(hashed.hash()).to.be(hashed);
 		});
 
 	});
 
-	describe('decrypt', function(){
+	describe('unhash', function(){
 
 		it('works on a clear password', function(){
 			var password = Passsafe.clear(realpass);
-			expect(password.decrypt()).to.be(password);
+			expect(password.unhash()).to.be(password);
 		});
 
-		it('fails on an encrypted password', function(){
-			var encrypted = Passsafe.clear(realpass).encrypt();
+		it('fails on an hashed password', function(){
+			var hashed = Passsafe.clear(realpass).hash();
 			expect(function(){
-				encrypted.decrypt();
+				hashed.unhash();
 			}).to.throwError(/not supported: password hashing works one-way/);
 		});
 
@@ -66,28 +66,28 @@ describe("Passsafe, the lower-level API", function(){
 			expect(password.toClear()).to.eql(realpass);
 		});
 
-		it('fails on an encrypted password', function(){
-			var encrypted = Passsafe.clear(realpass).encrypt();
+		it('fails on an hashed password', function(){
+			var hashed = Passsafe.clear(realpass).hash();
 			expect(function(){
-				encrypted.toClear();
+				hashed.toClear();
 			}).to.throwError(/not supported: password hashing works one-way/);
 		});
 
 	});
 
-	describe('toEncrypted', function(){
+	describe('toHashed', function(){
 
 		it('works on a clear password', function(){
-			var encrypted = Passsafe.hash(realpass);
-			expect(encrypted).not.to.eql(realpass);
-			expect(encrypted.length).to.eql(64);
+			var hashed = Passsafe.hash(realpass);
+			expect(hashed).not.to.eql(realpass);
+			expect(hashed.length).to.eql(64);
 		});
 
-		it('works on an encrypted password', function(){
-			var password  = Passsafe.clear(realpass).encrypt();
-			var encrypted = password.toEncrypted();
-			expect(encrypted).not.to.eql(realpass);
-			expect(encrypted.length).to.eql(64);
+		it('works on an hashed password', function(){
+			var password  = Passsafe.clear(realpass).hash();
+			var hashed = password.toHashed();
+			expect(hashed).not.to.eql(realpass);
+			expect(hashed.length).to.eql(64);
 		});
 
 	});
@@ -100,8 +100,8 @@ describe("Passsafe, the lower-level API", function(){
 			expect(password.isValid(badpass)).to.be(false);
 		});
 
-		it('works on an encrypted password', function(){
-			var password = Passsafe.clear(realpass).encrypt();
+		it('works on an hashed password', function(){
+			var password = Passsafe.clear(realpass).hash();
 			expect(password.isValid(realpass)).to.be(true);
 			expect(password.isValid(badpass)).to.be(false);
 		});
@@ -111,20 +111,20 @@ describe("Passsafe, the lower-level API", function(){
 
 		it('works on a clear password', function(){
 			var p1 = Passsafe.clear(realpass);
-			var p2 = p1.encrypt();
+			var p2 = p1.hash();
 			var p3 = Passsafe.clear(badpass);
-			var p4 = p3.encrypt();
+			var p4 = p3.hash();
 			expect(p1.equals(p1)).to.be(true);
 			expect(p1.equals(p2)).to.be(true);
 			expect(p1.equals(p3)).to.be(false);
 			expect(p1.equals(p4)).to.be(false);
 		});
 
-		it('works on an encrypted password', function(){
+		it('works on an hashed password', function(){
 			var p1 = Passsafe.clear(realpass);
-			var p2 = p1.encrypt();
+			var p2 = p1.hash();
 			var p3 = Passsafe.clear(badpass);
-			var p4 = p3.encrypt();
+			var p4 = p3.hash();
 			expect(p2.equals(p1)).to.be(true);
 			expect(p2.equals(p2)).to.be(true);
 			expect(p2.equals(p3)).to.be(false);

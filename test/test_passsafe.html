@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="../dist/passsafe.min.js"></script>
+	<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script>
+		function hashPassword(){
+			var hashed = Passsafe.hash($("#password").val());
+			$("#hashed").html(hashed);
+		}
+		$(function(){
+			$("#go").click(hashPassword);
+		});
+	</script>
+</head>
+<body>
+	<input id="password" type="text"></input>
+	<p id="hashed"></p>
+	<input type="button" id="go" value="Hash"></input>
+</body>
+</html>
