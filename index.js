@@ -45,13 +45,33 @@ Passsafe.Clear = function(clearPassword, options, salt) {
 };
 
 /*
+ * Returns a clear text version of the password.
+ *
+ * @api public
+ * @return String an clear string version of the password
+ */
+Passsafe.Clear.prototype.toClear = function(){
+	return this.clearPassword;
+};
+
+/*
  * Returns an encrypted text version of the password.
  *
  * @api public
  * @return String an encrypted string version of the password
  */
 Passsafe.Clear.prototype.toEncrypted = function(){
-	return this.encrypt().toString();
+	return this.encrypt().toEncrypted();
+};
+
+/*
+ * Returns an decrypted version of this password.
+ *
+ * @api public
+ * @return this.
+ */
+Passsafe.Clear.prototype.decrypt = function(){
+	return this;
 };
 
 /*
@@ -69,12 +89,14 @@ Passsafe.Clear.prototype.encrypt = function(){
 };
 
 /*
- * Returns this password as a string.
+ * Check if the clear text password passed as argument is the same
+ * password as this.
  *
- * @return String the clear password as a plain text string.
+ * @api public
+ * @return true if same password, false otherwise.
  */
-Passsafe.Clear.prototype.toString = function(){
-	return this.clearPassword;
+Passsafe.Clear.prototype.isValid = function(clearPassword){
+	return this.clearPassword == clearPassword;
 };
 
 // ----------------------------------------------------------------------- Clear
@@ -115,13 +137,12 @@ Passsafe.Encrypted.prototype.isValid = function(clearPassword){
 };
 
 /*
- * Returns this.
+ * Throws an error, as password hasing is one-way.
  *
  * @api public
- * @return this.
  */
-Passsafe.Encrypted.prototype.encrypt = function(){
-	return this;
+Passsafe.Encrypted.prototype.toClear = function(){
+	throw "not supported: password hashing works one-way";
 };
 
 /*
@@ -132,5 +153,23 @@ Passsafe.Encrypted.prototype.encrypt = function(){
 Passsafe.Encrypted.prototype.toEncrypted = function(){
 	return this.encryptedPassword;
 };
-Passsafe.Encrypted.prototype.toString = Passsafe.Encrypted.prototype.toEncrypted;
 
+/*
+ * Throws an error, as password hasing is one-way.
+ *
+ * @api public
+ * @return this.
+ */
+Passsafe.Encrypted.prototype.decrypt = function(){
+	throw "not supported: password hashing works one-way";
+};
+
+/*
+ * Returns an encrypted version of this password.
+ *
+ * @api public
+ * @return this.
+ */
+Passsafe.Encrypted.prototype.encrypt = function(){
+	return this;
+};

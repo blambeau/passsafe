@@ -2,7 +2,7 @@
 
 Passsafe is a simple javascript utility to keep passwords securely hashed in storage and check them later. It simply encapsulates the use of standard methods (here pbkdf2) behind a nice object-oriented interface.
 
-Passsafe uses crypto-js, a pure javascript dependency. Itcan therefore be used both in a node.js and browser environment, unlike many other candidates.
+Passsafe uses [crypto-js](https://code.google.com/p/crypto-js/), a pure javascript dependency. Itcan therefore be used both in a node.js and browser environment, unlike many other candidates that are bound to a C/C++ library.
 
 ## Example
 
@@ -33,6 +33,32 @@ if (Password.encrypted(encrypted).isValid(toCheck)) {
   console.log("No, invalid password");
 }
 ```
+
+## How to remember the API?
+
+The API might look strange at first glance, but if you understand where it comes from, you'll have no difficulty remembering it.
+
+1. Passsafe implements a Password data abstraction, hence
+
+		Password = require('passsafe');
+
+2. A password has two possible representations, one in clear text and another as encrypted:
+
+		Password.clear("some clear text password");
+		Password.encrypted("some encrypted/hashed password");
+
+3. One you got a Password instance, you can get the string representations back:
+
+		password = ...
+		password.toClear()
+		password.toEncrypted()
+
+   However, as password hashing is one-way the following will of course fail:
+
+        password = Password.encrypted('...')
+        password.toClear() // not supported error
+
+For more information about where this data abstraction technique comes from, see what I call [Information Contracts](http://www.finitio.io/reference/latest/information-contracts).
 
 ## Options
 
