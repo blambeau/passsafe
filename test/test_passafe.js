@@ -1,6 +1,8 @@
 var Passsafe = require('../index.js');
 var expect = require('expect.js');
 
+Passsafe.DEFAULT_OPTIONS.ITERATIONS	= 1;
+
 describe("Passsafe", function(){
 
 	var realpass = "a password";
@@ -100,6 +102,31 @@ describe("Passsafe", function(){
 			var password = Passsafe.clear(realpass).encrypt();
 			expect(password.isValid(realpass)).to.be(true);
 			expect(password.isValid(badpass)).to.be(false);
+		});
+	});
+
+	describe('equals', function(){
+
+		it('works on a clear password', function(){
+			var p1 = Passsafe.clear(realpass);
+			var p2 = p1.encrypt();
+			var p3 = Passsafe.clear(badpass);
+			var p4 = p3.encrypt();
+			expect(p1.equals(p1)).to.be(true);
+			expect(p1.equals(p2)).to.be(true);
+			expect(p1.equals(p3)).to.be(false);
+			expect(p1.equals(p4)).to.be(false);
+		});
+
+		it('works on an encrypted password', function(){
+			var p1 = Passsafe.clear(realpass);
+			var p2 = p1.encrypt();
+			var p3 = Passsafe.clear(badpass);
+			var p4 = p3.encrypt();
+			expect(p2.equals(p1)).to.be(true);
+			expect(p2.equals(p2)).to.be(true);
+			expect(p2.equals(p3)).to.be(false);
+			expect(p2.equals(p4)).to.be(false);
 		});
 	});
 

@@ -40,18 +40,35 @@ The API might look strange at first glance, but if you understand where it comes
 
 1. Passsafe implements a Password data abstraction, hence
 
-		Password = require('passsafe');
+        Password = require('passsafe');
 
 2. A password has two possible representations, one in clear text and another as encrypted:
 
-		Password.clear("some clear text password");
-		Password.encrypted("some encrypted/hashed password");
+        Password.clear("some clear text password");
+        Password.encrypted("some encrypted/hashed password");
 
-3. One you got a Password instance, you can get the string representations back:
+3. Whatever the kind of password that you have (that is, you don't care about the actual representation once created), you can check if a password is valid:
 
-		password = ...
-		password.toClear()
-		password.toEncrypted()
+        password = ...
+        password.isValid("...")
+
+  which is the same as checking whether two passwords are equal (denote the same value):
+
+        p1 = Password.clear('foo');
+        p2 = p1.encrypt();
+        p1.equals(p2); // true
+        p1.equals(p3); // false
+
+        p3 = Password.clear('bar');
+        p4 = p3.encrypt();
+        p1.equals(p3); // false
+        p1.equals(p4); // false
+
+4. One you got a Password instance, you can get the string representations back:
+
+        password = ...
+        password.toClear()
+        password.toEncrypted()
 
    However, as password hashing is one-way the following will of course fail:
 
@@ -66,14 +83,14 @@ Passsafe provides some options to control the hashing process. The example below
 
 ```javascript
 options = {
-	// salt size in bytes (see CryptoJS.lib.WordArray.random)
-	SALT_SIZE: 16,
+    // salt size in bytes (see CryptoJS.lib.WordArray.random)
+    SALT_SIZE: 16,
 
-	// key size in words (128 bits by default, see CryptoJS.algo.PBKDF2)
-	KEY_SIZE: 128/32,
+    // key size in words (128 bits by default, see CryptoJS.algo.PBKDF2)
+    KEY_SIZE: 128/32,
 
-	// The number of PBKDF2 iterations
-	ITERATIONS = 1000
+    // The number of PBKDF2 iterations
+    ITERATIONS = 1000
 };
 
 // use those options in particular, at hashing time

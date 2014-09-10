@@ -99,6 +99,16 @@ Passsafe.Clear.prototype.isValid = function(clearPassword){
 	return this.clearPassword == clearPassword;
 };
 
+/*
+ * Check if this password is the same as `other`.
+ *
+ * @arg other a Passsafe instance
+ * @return true if the same password, false otherwise.
+ */
+Passsafe.Clear.prototype.equals = function(other){
+	return this.toEncrypted() == other.toEncrypted();
+};
+
 // ----------------------------------------------------------------------- Clear
 
 /*
@@ -172,4 +182,14 @@ Passsafe.Encrypted.prototype.decrypt = function(){
  */
 Passsafe.Encrypted.prototype.encrypt = function(){
 	return this;
+};
+
+/*
+ * Check if this password is the same as `other`.
+ *
+ * @arg other a Passsafe instance
+ * @return true if the same password, false otherwise.
+ */
+Passsafe.Encrypted.prototype.equals = function(other){
+	return this.toEncrypted() == other.toEncrypted();
 };
