@@ -1,0 +1,24 @@
+{
+  "name": "passsafe",
+  "main": "index.js",
+  "version": "0.0.1",
+  "homepage": "https://github.com/blambeau/passsafe",
+  "authors": [
+    "Bernard Lambeau <blambeau@gmail.com>"
+  ],
+  "description": "Store hashed passwords a secure way, i.e. in (local) storage",
+  "keywords": [
+    "password",
+    "hash",
+    "pbkdf2",
+    "browser"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

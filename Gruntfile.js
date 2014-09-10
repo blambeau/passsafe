@@ -55,13 +55,6 @@ module.exports = function(grunt) {
           standalone: 'Passsafe',
           extensions: ['.js']
         }
-      },
-      tests: {
-        files: {
-          'dist/test_bundle.js': ['test/**/*.js']
-        },
-        options: {
-        }
       }
     },
 
