@@ -2,7 +2,7 @@
 
 Passsafe is a simple javascript utility to keep passwords securely hashed in storage and check them later. It simply encapsulates the use of standard methods (here pbkdf2) behind a nice object-oriented interface.
 
-Passsafe uses [crypto-js](https://code.google.com/p/crypto-js/), a pure javascript dependency. Itcan therefore be used both in a node.js and browser environment, unlike many other candidates that are bound to a C/C++ library.
+Passsafe uses [crypto-js](https://code.google.com/p/crypto-js/), a pure javascript dependency. It can therefore be used both in node.js and browser environments, unlike many other candidates that are bound to a C/C++ library.
 
 ## Example
 
@@ -55,7 +55,7 @@ The OO API is occasionnaly useful. It might look strange at first glance, but if
         p2.equals(p2); // and the hashed version is equal to itself
 
         p1.equals(p3); // false, a clear text password is not equal to a different one
-        p1.equals(p4); // false, not to its hashed version
+        p1.equals(p4); // false, nor to its hashed version
         p2.equals(p3); // the hashed version is not equal to another one clear
         p2.equals(p4); // nor to another hash
 
@@ -89,10 +89,10 @@ options = {
 };
 
 // use those options in particular, at hashing time
-Password.hash("a clear password", options)
+Passsafe.hash("a clear password", options)
 
 // ... and checking time
-Password.isValid("a clear password", "the hashed version", options);
+Passsafe.isValid("a clear password", "the hashed version", options);
 ```
 
 ## How does it work?
