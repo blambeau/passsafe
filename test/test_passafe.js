@@ -1,31 +1,33 @@
 var Passsafe = require('../index.js');
 var expect = require('expect.js');
 
+var realpass = "a password";
+var badpass = "not that password";
+
 Passsafe.DEFAULT_OPTIONS.ITERATIONS	= 1;
 
-describe("Passsafe", function(){
+describe("Passsafe, the higher-level API", function(){
 
-	var realpass = "a password";
-	var badpass = "not that password";
+	it('allows hashing a password', function(){
+		var hashed = Passsafe.hash(realpass);
+		expect(hashed).not.to.eql(realpass);
+		expect(hashed.length).to.eql(64);
+	});
 
-	it('allows encrypting and checking a password', function(){
-		// create a clear passsafe instance
-		var clear = Passsafe.clear(realpass);
-
-		// encrypt it and reload an encrypted version
-		var encrypted = clear.toEncrypted();
-		var test = Passsafe.encrypted(encrypted);
-
-		// check that it recognizes passwords correctly
-		expect(test.isValid(realpass)).to.be(true);
-		expect(test.isValid(badpass)).to.be(false);
+	it('allows verifying if a password is valid', function(){
+		var hashed = Passsafe.hash(realpass);
+		expect(Passsafe.isValid(realpass, hashed)).to.be(true);
+		expect(Passsafe.isValid(badpass, hashed)).to.be(false);
 	});
 
 	it('returns different encrypted passwords for the same cleartext password', function(){
-		var enc1 = Passsafe.clear(realpass).toEncrypted();
-		var enc2 = Passsafe.clear(realpass).toEncrypted();
+		var enc1 = Passsafe.hash(realpass);
+		var enc2 = Passsafe.hash(realpass);
 		expect(enc1).not.to.eql(enc2);
 	});
+});
+
+describe("Passsafe, the lower-level API", function(){
 
 	describe('encrypt', function(){
 
@@ -76,7 +78,7 @@ describe("Passsafe", function(){
 	describe('toEncrypted', function(){
 
 		it('works on a clear password', function(){
-			var encrypted = Passsafe.clear(realpass).toEncrypted();
+			var encrypted = Passsafe.hash(realpass);
 			expect(encrypted).not.to.eql(realpass);
 			expect(encrypted.length).to.eql(64);
 		});

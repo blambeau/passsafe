@@ -14,6 +14,30 @@ Passsafe.DEFAULT_OPTIONS.KEY_SIZE = 128/32;
 // Number of iterations to use
 Passsafe.DEFAULT_OPTIONS.ITERATIONS = 1000;
 
+// ----------------------------------------------------------------------- Facade
+
+/*
+ * Hashes a password in clear plain text.
+ *
+ * @arg clearPassword password in clear text.
+ * @return the password hashed as a string.
+ * @api public
+ */
+Passsafe.hash = function(clearPassword, options){
+	return Passsafe.clear(clearPassword, options).toEncrypted();
+};
+
+/*
+ * Checks if a clear text password is valid against a previously hashed one.
+ *
+ * @arg clearPassword a password in clear text, to be checked.
+ * @arg hashed the result of a previous call to `hash` with a password.
+ * @return true if the password is valid, false otherwise.
+ */
+Passsafe.isValid = function(clearPassword, hashed, options){
+	return Passsafe.encrypted(hashed, options).isValid(clearPassword);
+};
+
 // ----------------------------------------------------------------------- Clear
 
 /*

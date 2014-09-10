@@ -9,34 +9,24 @@ Passsafe uses [crypto-js](https://code.google.com/p/crypto-js/), a pure javascri
 To hash a password:
 
 ```javascript
-var Password = require('passsafe');
-
-var cleartext = "some password coming from the user";
-
-// `encrypted` is a simple hashed string that you can keep in a resonably
-// safe way
-var encrypted = Passsafe.clear(cleartext).toEncrypted();
+var Passsafe = require('passsafe');
+var hashed = Passsafe.hash("some password coming from the user");
 ```
 
 To verify a password later:
 
 ```javascript
-var Password = require('passsafe');
+var Passsafe = require('passsafe');
 
 var toCheck = "some password coming from the user";
-var encrypted = "..."; // (retrived from a storage location)
+var hashed  = "..."; // (retrived from a storage location)
 
-// check if it's the correct password
-if (Password.encrypted(encrypted).isValid(toCheck)) {
-  console.log("Yes, access granted!");
-} else {
-  console.log("No, invalid password");
-}
+Passsafe.isValid(toCheck, hashed)
 ```
 
-## How to remember the API?
+## The OO API and where it comes from
 
-The API might look strange at first glance, but if you understand where it comes from, you'll have no difficulty remembering it.
+The OO API is occasionnaly useful. It might look strange at first glance, but if you understand where it comes from, you'll have no difficulty remembering it.
 
 1. Passsafe implements a Password data abstraction, hence
 
